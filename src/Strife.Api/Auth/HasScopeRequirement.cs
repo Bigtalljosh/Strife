@@ -12,7 +12,6 @@ namespace Strife.Api.Auth
         {
             Scope = scope ?? throw new ArgumentNullException(nameof(scope));
             Issuer = issuer ?? throw new ArgumentNullException(nameof(issuer));
-
         }
     }
 }

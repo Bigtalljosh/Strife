@@ -4,8 +4,9 @@ using System.Linq;
 
 namespace Strife.Api.Controllers
 {
-    [ApiController]
+    
     [Route("[controller]")]
+    [ApiController]
     public class ScopeController : ControllerBase
     {
         [HttpGet("public")]
@@ -28,7 +29,7 @@ namespace Strife.Api.Controllers
         }
 
         [HttpGet("private-scoped")]
-        [Authorize("test")]
+        [Authorize("read:test")]
         public IActionResult Scoped()
         {
             return Ok(new

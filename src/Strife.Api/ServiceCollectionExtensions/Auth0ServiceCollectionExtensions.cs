@@ -26,14 +26,14 @@ namespace Strife.Api.ServiceCollectionExtensions
                 {
                     NameClaimType = ClaimTypes.NameIdentifier
                 };
-
-                services.AddAuthorization(options =>
-                {
-                    options.AddPolicy("test", policy => policy.Requirements.Add(new HasScopeRequirement("test:scope", domain)));
-                });
-
-                services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:test", policy => policy.Requirements.Add(new HasScopeRequirement("read:test", domain)));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             return services;
         }
