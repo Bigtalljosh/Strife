@@ -13,3 +13,16 @@
  So far I've set up: 
  * Swagger
  * Authentication and Authorization using Auth0
+
+### What is on the roadmap for Strife?
+
+Things I want to look into and perhaps add are:
+* [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
+* [MediatR](https://github.com/jbogard/MediatR)
+* [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
+* [Ocelot](https://github.com/ThreeMammals/Ocelot)
+* [Different Health Checks and UI's for them](https://github.com/xabaril/AspNetCore.Diagnostics.HealthChecks)
+* [Polly](https://github.com/App-vNext/Polly)
+* [Serilog](https://github.com/serilog/serilog)
+* [Hangfire](https://github.com/HangfireIO/Hangfire)
+* Many more!
