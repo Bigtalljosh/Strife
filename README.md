@@ -11,5 +11,5 @@
  ### List of things in Strife
  
  So far I've set up: 
- ..* Swagger
- ..* Authentication and Authorization using Auth0
+ * Swagger
+ * Authentication and Authorization using Auth0
