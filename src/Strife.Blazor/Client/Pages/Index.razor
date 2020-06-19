@@ -1,0 +1,16 @@
+﻿@page "/"
+@inject HttpClient Http
+
+@((MarkupString)markdown)
+
+
+@code {
+
+    private string markdown = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        markdown = await Http.GetStringAsync("/StrifeInfo");
+    }
+
+}

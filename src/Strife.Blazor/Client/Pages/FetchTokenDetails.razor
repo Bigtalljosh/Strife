@@ -1,0 +1,43 @@
+@page "/fetchtokendetails"
+@using Strife.Blazor.Shared.Models
+@inject HttpClient Http
+
+<h1>List Token Data</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (scopes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var scope in scopes)
+            {
+                <tr>
+                    <td>@scope.Type</td>
+                    <td>@scope.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Token[] scopes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Http.DefaultRequestHeaders.Add("Authorization", "Bearer ");
+        scopes = await Http.GetFromJsonAsync<Token[]>("Scope/claims");
+    }
+
+}
