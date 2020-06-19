@@ -1,4 +1,4 @@
-﻿namespace Strife.Blazor.Shared
+﻿namespace Strife.Blazor.Shared.Models
 {
     public class Token
     {

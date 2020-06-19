@@ -26,6 +26,13 @@ namespace Strife.Blazor.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddHealthChecks();
+
+            AddProjectServices(services);
+        }
+
+        private void AddProjectServices(IServiceCollection services)
+        {
+            services.AddSingleton(new MarkdownService());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

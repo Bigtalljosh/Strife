@@ -1,5 +1,16 @@
 ﻿@page "/"
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
+@((MarkupString)markdown)
 
-Welcome to your new app.
+
+@code {
+
+    private string markdown = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        markdown = await Http.GetStringAsync("/StrifeInfo");
+    }
+
+}

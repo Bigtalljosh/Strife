@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Strife.Blazor.Shared;
+using Strife.Blazor.Shared.Models;
 using System.Collections.Generic;
 using System.Linq;
 
