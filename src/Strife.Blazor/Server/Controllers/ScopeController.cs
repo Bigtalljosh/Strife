@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Strife.Blazor.Shared;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Strife.Api.Controllers
+namespace Strife.Blazor.Server.Controllers
 {
-    
     [Route("[controller]")]
     [ApiController]
     public class ScopeController : ControllerBase
@@ -42,12 +43,26 @@ namespace Strife.Api.Controllers
         [HttpGet("claims")]
         public IActionResult Claims()
         {
-            return Ok(User.Claims.Select(c =>
+            var tokenInfo = new List<Token>();
+
+            var scopes = User.Claims.Select(c =>
                 new
                 {
                     c.Type,
                     c.Value
-                }));
+                });
+
+            foreach (var scope in scopes)
+            {
+                tokenInfo.Add(new Token { Type = scope.Type, Value = scope.Value });
+            }
+
+            if(tokenInfo.Count == 0)
+            {
+                tokenInfo.Add(new Token { Type = "test", Value = "This is a test response as you had no token on the request" });
+            }
+
+            return Ok(tokenInfo);
         }
     }
 }

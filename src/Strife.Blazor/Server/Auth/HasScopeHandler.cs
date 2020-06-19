@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Strife.Api.Auth
+namespace Strife.Blazor.Server.Auth
 {
     public class HasScopeHandler : AuthorizationHandler<HasScopeRequirement>
     {

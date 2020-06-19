@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System;
 
-namespace Strife.Api.Auth
+namespace Strife.Blazor.Server.Auth
 {
     public class HasScopeRequirement : IAuthorizationRequirement
     {

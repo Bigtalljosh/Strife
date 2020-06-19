@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Strife.Api.ServiceCollectionExtensions
+namespace Strife.Blazor.Server.ServiceCollectionExtensions
 {
     internal static class SwaggerServiceCollectionExtensions
     {

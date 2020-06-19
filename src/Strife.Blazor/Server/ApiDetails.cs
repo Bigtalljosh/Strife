@@ -1,4 +1,4 @@
-﻿namespace Strife.Api
+﻿namespace Strife.Blazor.Server
 {
     public class ApiDetails
     {

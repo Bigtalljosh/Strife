@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Strife.Api.Auth;
+using Strife.Blazor.Server.Auth;
 using System.Security.Claims;
 
-namespace Strife.Api.ServiceCollectionExtensions
+namespace Strife.Blazor.Server.ServiceCollectionExtensions
 {
     internal static class Auth0ServiceCollectionExtensions
     {
