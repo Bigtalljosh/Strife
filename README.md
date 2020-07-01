@@ -26,3 +26,6 @@ Things I want to look into and perhaps add are:
 * [Serilog](https://github.com/serilog/serilog)
 * [Hangfire](https://github.com/HangfireIO/Hangfire)
 * Many more!
+
+### How did you get this running in Docker?
+I followed the handy blog post [here](https://chrissainty.com/containerising-blazor-applications-with-docker-containerising-a-blazor-webassembly-app/)
