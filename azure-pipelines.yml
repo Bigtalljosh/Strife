@@ -43,6 +43,7 @@ steps:
       repository: $(imageName)
       command: build
       Dockerfile: src/Strife.Blazor/Server/DockerfileCI
+      arguments: --build-arg artifactStagingDirectory=$(Build.ArtifactStagingDirectory)
 
   - task: Docker@2
     displayName: Push image to DockerHub
