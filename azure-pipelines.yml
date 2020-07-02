@@ -14,41 +14,41 @@ variables:
   imageName: 'bigtalljosh/strife'
   buildConfiguration: 'Release'
 
-  steps:
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet build $(buildConfiguration)'
-      inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build $(buildConfiguration)'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet test'
-      inputs:
-        command: test
-        projects: "**/*Tests.csproj"
-        arguments: '--configuration $(buildConfiguration) --no-build'
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet test'
+    inputs:
+      command: test
+      projects: "**/*Tests.csproj"
+      arguments: '--configuration $(buildConfiguration) --no-build'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet publish'
-      inputs:
-        command: 'publish'
-        projects: "**/Strife.Blazor.Server.csproj"
-        arguments: '--configuration $(buildConfiguration) --no-build'
-    
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        repository: $(imageName)
-        command: build
-        Dockerfile: src/Strife.Blazor.Server/Dockerfile
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish'
+    inputs:
+      command: 'publish'
+      projects: "**/Strife.Blazor.Server.csproj"
+      arguments: '--configuration $(buildConfiguration) --no-build'
+  
+  - task: Docker@2
+    displayName: Build an image
+    inputs:
+      repository: $(imageName)
+      command: build
+      Dockerfile: src/Strife.Blazor.Server/Dockerfile
 
-    - task: Docker@2
-      displayName: Push image to DockerHub
-      inputs:
-        containerRegistry: |
-          $(dockerHub)
-        repository: $(imageName)
-        command: push
-        tags: |
-          $(tag)
+  - task: Docker@2
+    displayName: Push image to DockerHub
+    inputs:
+      containerRegistry: |
+        $(dockerHub)
+      repository: $(imageName)
+      command: push
+      tags: |
+        $(tag)
