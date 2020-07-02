@@ -44,11 +44,11 @@ variables:
         Dockerfile: src/Strife.Blazor.Server/Dockerfile
 
     - task: Docker@2
-    displayName: Push image to DockerHub
-    inputs:
-      containerRegistry: |
-        $(dockerHub)
-      repository: $(imageName)
-      command: push
-      tags: |
-      $(tag)
+      displayName: Push image to DockerHub
+      inputs:
+        containerRegistry: |
+          $(dockerHub)
+        repository: $(imageName)
+        command: push
+        tags: |
+        $(tag)
