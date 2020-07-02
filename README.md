@@ -13,11 +13,13 @@
  So far I've set up: 
  * Swagger
  * Authentication and Authorization using Auth0
+ * Blazor wasm
+ * Docker
 
 ### What is on the roadmap for Strife?
 
 Things I want to look into and perhaps add are:
-* [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
+* ~~[Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)~~
 * [MediatR](https://github.com/jbogard/MediatR)
 * [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
 * [Ocelot](https://github.com/ThreeMammals/Ocelot)
@@ -27,5 +29,3 @@ Things I want to look into and perhaps add are:
 * [Hangfire](https://github.com/HangfireIO/Hangfire)
 * Many more!
 
-### How did you get this running in Docker?
-I followed the handy blog post [here](https://chrissainty.com/containerising-blazor-applications-with-docker-containerising-a-blazor-webassembly-app/)
