@@ -21,11 +21,9 @@ variables:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
-      displayName: 'dotnet build $(buildConfiguration)'
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet test'
-      displayName: "Test"
       inputs:
         command: test
         projects: "**/*Tests.csproj"
