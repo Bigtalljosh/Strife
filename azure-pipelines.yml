@@ -8,10 +8,49 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-
+  
 variables:
+  tag: '$(Build.BuildId)'
+  imageName: 'bigtalljosh/strife'
   buildConfiguration: 'Release'
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build $(buildConfiguration)'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+      displayName: 'dotnet build $(buildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet test'
+      displayName: "Test"
+      inputs:
+        command: test
+        projects: "**/*Tests.csproj"
+        arguments: '--configuration $(buildConfiguration) --no-build'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet publish'
+      inputs:
+        command: 'publish'
+        projects: "**/Strife.Blazor.Server.csproj"
+        arguments: '--configuration $(buildConfiguration) --no-build'
+    
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        repository: $(imageName)
+        command: build
+        Dockerfile: src/Strife.Blazor.Server/Dockerfile
+
+    - task: Docker@2
+    displayName: Push image to DockerHub
+    inputs:
+      containerRegistry: |
+        $(dockerHub)
+      repository: $(imageName)
+      command: push
+      tags: |
+      $(tag)
