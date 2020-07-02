@@ -42,7 +42,7 @@ steps:
       targetType: 'inline'
       workingDirectory: $(Build.ArtifactStagingDirectory)
       script: |
-      'docker build -f src/Strife.Blazor/Server/Dockerfile
+      'docker build -f src/Strife.Blazor/Server/Dockerfile'
 
   - task: Docker@2
     displayName: Push image to DockerHub
