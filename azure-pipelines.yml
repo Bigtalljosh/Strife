@@ -40,7 +40,7 @@ steps:
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
-      arugments: -artifactDirectory $(Build.ArtifactStagingDirectory)
+      arugments: '-artifactDirectory $(Build.ArtifactStagingDirectory)'
       script: |
       docker build -f src/Strife.Blazor/Server/DockerfileCI --build-arg artifactStagingDirectory=$artifactDirectory
 
