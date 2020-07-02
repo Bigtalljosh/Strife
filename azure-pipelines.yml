@@ -51,4 +51,4 @@ variables:
         repository: $(imageName)
         command: push
         tags: |
-        $(tag)
+          $(tag)
