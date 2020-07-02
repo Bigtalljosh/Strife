@@ -12,6 +12,7 @@ pool:
 variables:
   tag: '$(Build.BuildId)'
   imageName: 'bigtalljosh/strife'
+  dockerHub: 'DockerHub_BigTallJosh'
   buildConfiguration: 'Release'
 
 steps:
