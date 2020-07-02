@@ -42,7 +42,7 @@ steps:
     inputs:
       repository: $(imageName)
       command: build
-      Dockerfile: src/Strife.Blazor.Server/Dockerfile
+      Dockerfile: src/Strife.Blazor/Server/Dockerfile
 
   - task: Docker@2
     displayName: Push image to DockerHub
