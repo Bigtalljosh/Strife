@@ -35,14 +35,14 @@ steps:
     inputs:
       command: 'publish'
       projects: "**/Strife.Blazor.Server.csproj"
-      arguments: '--configuration $(buildConfiguration) --no-build'
+      arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)' 
   
   - task: Docker@2
     displayName: Build an image
     inputs:
       repository: $(imageName)
       command: build
-      Dockerfile: src/Strife.Blazor/Server/Dockerfile
+      Dockerfile: src/Strife.Blazor/Server/DockerfileCI
 
   - task: Docker@2
     displayName: Push image to DockerHub
