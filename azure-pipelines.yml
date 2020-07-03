@@ -11,12 +11,14 @@ pool:
 
 variables:
   - group: TerraformServicePrincipleVars
-  
-variables:
-  tag: $(Build.BuildId)
-  imageName: bigtalljosh/strife
-  dockerHub: DockerHub_BigTallJosh
-  buildConfiguration: Release
+  - name: tag
+    value: $(Build.BuildId)
+  -name: imageName
+    value: bigtalljosh/strife
+  -name: dockerHub
+    value: DockerHub_BigTallJosh
+  -name: buildConfiguration
+    value: Release
 
 steps:
   - task: DotNetCoreCLI@2
