@@ -4,14 +4,45 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 variables:
-  buildConfiguration: 'Release'
+  tag: $(Build.BuildId)
+  imageName: bigtalljosh/strife
+  dockerHub: DockerHub_BigTallJosh
+  buildConfiguration: Release
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build $(buildConfiguration)
+    inputs:
+      command: build
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet test
+    inputs:
+      command: test
+      projects: '**/*Tests.csproj'
+      arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --no-build'
+      
+  - task: Docker@2
+    displayName: Build Strife Image
+    inputs:
+      repository: $(imageName)
+      command: build
+      Dockerfile: Dockerfile
+
+  - task: Docker@2
+    displayName: Push image
+    inputs:
+      containerRegistry: |
+        $(dockerHub)
+      repository: $(imageName)
+      command: push
+      tags: |
+        $(tag)

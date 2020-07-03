@@ -11,7 +11,14 @@ RUN dotnet build "Strife.Blazor.Server.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "Strife.Blazor.Server.csproj" -c Release -o /app/publish
 
-FROM nginx:alpine AS final
-WORKDIR /usr/share/nginx/html
+FROM publish AS final
+ENV ASPNETCORE_URLS=http://+:5000
+EXPOSE 5000
+WORKDIR /app
 COPY --from=publish /app/publish/ .
-COPY nginx.conf /etc/nginx/nginx.conf
+ENTRYPOINT ["dotnet", "Strife.Blazor.Server.dll"]
+
+
+# For quick reference 
+# docker build -t strife .
+# docker run -p 8080:5000 strife
