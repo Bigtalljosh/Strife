@@ -10,11 +10,11 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
+  - group: TerraformServicePrincipleVars
   tag: $(Build.BuildId)
   imageName: bigtalljosh/strife
   dockerHub: DockerHub_BigTallJosh
   buildConfiguration: Release
-  - group: TerraformServicePrincipleVars
 
 steps:
   - task: DotNetCoreCLI@2
