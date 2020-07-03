@@ -20,7 +20,7 @@
 
 Things I want to look into and perhaps add are:
 * ~~[Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)~~
-* [Terradorm](https://www.terraform.io/)
+* [Terraform](https://www.terraform.io/)
 * [MediatR](https://github.com/jbogard/MediatR)
 * [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
 * [Ocelot](https://github.com/ThreeMammals/Ocelot)
