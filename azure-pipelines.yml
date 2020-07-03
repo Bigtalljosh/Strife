@@ -12,6 +12,7 @@ pool:
 variables:
   tag: $(Build.BuildId)
   imageName: bigtalljosh/strife
+  dockerHub: DockerHub_BigTallJosh
   buildConfiguration: Release
 
 steps:
@@ -27,11 +28,21 @@ steps:
     inputs:
       command: test
       projects: '**/*Tests.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build'
+      arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --no-build'
       
-  - task: DotNetCoreCLI@2
-    displayName: dotnet publish
+  - task: Docker@2
+    displayName: Build Strife Image
     inputs:
-      command: publish
-      projects: '**/Strife.Blazor.Server.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build'
+      repository: $(imageName)
+      command: build
+      Dockerfile: app/Dockerfile
+
+  - task: Docker@2
+    displayName: Push image
+    inputs:
+      containerRegistry: |
+        $(dockerHub)
+      repository: $(imageName)
+      command: push
+      tags: |
+        $(tag)
