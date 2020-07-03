@@ -13,11 +13,14 @@
  So far I've set up: 
  * Swagger
  * Authentication and Authorization using Auth0
+ * Blazor wasm
+ * Docker
 
 ### What is on the roadmap for Strife?
 
 Things I want to look into and perhaps add are:
-* [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
+* ~~[Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)~~
+* [Terraform](https://www.terraform.io/)
 * [MediatR](https://github.com/jbogard/MediatR)
 * [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
 * [Ocelot](https://github.com/ThreeMammals/Ocelot)
@@ -26,3 +29,4 @@ Things I want to look into and perhaps add are:
 * [Serilog](https://github.com/serilog/serilog)
 * [Hangfire](https://github.com/HangfireIO/Hangfire)
 * Many more!
+
