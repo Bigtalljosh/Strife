@@ -11,6 +11,8 @@ pool:
 
 variables:
   - group: TerraformServicePrincipleVars
+  
+variables:
   tag: $(Build.BuildId)
   imageName: bigtalljosh/strife
   dockerHub: DockerHub_BigTallJosh
