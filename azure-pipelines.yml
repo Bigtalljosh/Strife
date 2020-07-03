@@ -14,67 +14,49 @@ variables:
   imageName: bigtalljosh/strife
   dockerHub: DockerHub_BigTallJosh
   buildConfiguration: Release
+  - group: TerraformServicePrincipleVars
 
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build $(buildConfiguration)
+    inputs:
+      command: build
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
 
-jobs:
-  - job: BuildCode
-    displayName: Build and Test Code
-    continueOnError: false
-    workspace:
-      clean: outputs
-    steps:
-      - task: DotNetCoreCLI@2
-        displayName: dotnet build $(buildConfiguration)
-        inputs:
-          command: build
-          projects: '**/*.csproj'
-          arguments: '--configuration $(buildConfiguration)'
+  - task: DotNetCoreCLI@2
+    displayName: dotnet test
+    inputs:
+      command: test
+      projects: '**/*Tests.csproj'
+      arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --no-build'
+      
+  - task: Docker@2
+    displayName: Build Strife Image
+    inputs:
+      repository: $(imageName)
+      command: build
+      Dockerfile: Dockerfile
 
-      - task: DotNetCoreCLI@2
-        displayName: dotnet test
-        inputs:
-          command: test
-          projects: '**/*Tests.csproj'
-          arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --no-build'
-          
-  - job: BuildImage
-      displayName: Build and Push Docker Image
-      dependsOn: BuildCode
-      continueOnError: false
-      steps:
-        - task: Docker@2
-          displayName: Build Strife Image
-          inputs:
-            repository: $(imageName)
-            command: build
-            Dockerfile: Dockerfile
+  - task: Docker@2
+    displayName: Push image
+    inputs:
+      containerRegistry: |
+        $(dockerHub)
+      repository: $(imageName)
+      command: push
+      tags: |
+        $(tag)
 
-        - task: Docker@2
-          displayName: Push image
-          inputs:
-            containerRegistry: |
-              $(dockerHub)
-            repository: $(imageName)
-            command: push
-            tags: |
-              $(tag)
-
-  - job: CreateInfra
-      displayName: Terraform Azure CreateInfra
-      dependsOn: BuildImage
-      continueOnError: false
-      variables: 
-        - group: TeraformEnvVars
-      steps:
-        - script: |
-            set -e
-            terraform init -input=false
-            terraform apply -input=false -auto-approve
-          name: 'RunTerraform'
-          displayName: 'Run Terraform'
-          env:
-            ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-            ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-            ARM_TENANT_ID: $(ARM_TENANT_ID)
-            ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-            TF_VAR_imagebuild: $(tag)
+  - script: |
+      set -e
+      terraform init -input=false
+      terraform apply -input=false -auto-approve
+    name: 'RunTerraform'
+    displayName: 'Run Terraform'
+    env:
+      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+      ARM_TENANT_ID: $(ARM_TENANT_ID)
+      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+      TF_VAR_imagebuild: $(tag)
