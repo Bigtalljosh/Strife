@@ -10,11 +10,13 @@ namespace Strife.Blazor.Server
     public class Startup
     {
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
         private readonly bool _enableSwagger;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _configuration = configuration;
+            _environment = environment;
             _enableSwagger = _configuration.GetValue<bool>("FeatureToggles:Swagger");
         }
 
@@ -22,10 +24,14 @@ namespace Strife.Blazor.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuth0(_configuration);
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddHealthChecks();
+
+            if (_environment.IsDevelopment())
+            {
+                services.AddSwagger(_configuration);
+            }
 
             AddProjectServices(services);
         }
@@ -36,9 +42,9 @@ namespace Strife.Blazor.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
