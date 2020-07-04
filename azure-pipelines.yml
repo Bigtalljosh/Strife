@@ -11,7 +11,7 @@ pool:
 
 variables:
   - group: TerraformServicePrincipleVars
-  - group: auth0test
+  - group: auth0
   - name: tag
     value: $(Build.BuildId)
   - name: imageName
@@ -67,7 +67,7 @@ steps:
       ARM_TENANT_ID: $(ARM_TENANT_ID)
       ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
       TF_VAR_imagebuild: $(tag)
-      TF_VAR_auth0clientid: $(TESTClientId)
+      TF_VAR_auth0clientid: $(A0ClientId)
       TF_VAR_auth0clientsecret: $(A0ClientSecret)
-      TF_VAR_auth0domain: $(TESTDomain)
+      TF_VAR_auth0domain: $(A0Domain)
       TF_VAR_auth0apiidentifier: $(A0ApiIdentifier)
