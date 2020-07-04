@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
@@ -8,8 +9,11 @@ namespace Strife.Blazor.Server.ServiceCollectionExtensions
 {
     internal static class SwaggerServiceCollectionExtensions
     {
-        public static IServiceCollection AddSwagger(this IServiceCollection services, ApiDetails apiDetails)
+        public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
         {
+            ApiDetails apiDetails = new ApiDetails();
+            configuration.GetSection("ApiDetails").Bind(apiDetails);
+
             services.AddSwaggerGen(options =>
             {
                 var info = new OpenApiInfo

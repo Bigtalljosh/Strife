@@ -11,7 +11,7 @@ pool:
 
 variables:
   - group: TerraformServicePrincipleVars
-  - group: auth0
+  - group: auth0test
   - name: tag
     value: $(Build.BuildId)
   - name: imageName
