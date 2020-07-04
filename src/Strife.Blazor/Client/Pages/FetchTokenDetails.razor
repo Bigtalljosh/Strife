@@ -1,43 +1,49 @@
 @page "/fetchtokendetails"
-@using Strife.Blazor.Shared.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
 
 <h1>List Token Data</h1>
+<h3>Claims associated with current User</h3>
+<p>This page displays all the claims associated the the current User. This is useful when debugging to see which claims are being populated from the Auth0 ID Token.</p>
 
-<p>This component demonstrates fetching data from the server.</p>
-
-@if (scopes == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var scope in scopes)
-            {
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@scope.Type</td>
-                    <td>@scope.Value</td>
+                    <th>
+                        Claim
+                    </th>
+                    <th>
+                        Value
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var scope in @context.User.Claims)
+                {
+                    <tr>
+                        <td>@scope.Type</td>
+                        <td>@scope.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Authorized>
+    <NotAuthorized>
+        <a href="authentication/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
-    private Token[] scopes;
-
-    protected override async Task OnInitializedAsync()
+    private async Task BeginSignOut(MouseEventArgs args)
     {
-        Http.DefaultRequestHeaders.Add("Authorization", "Bearer ");
-        scopes = await Http.GetFromJsonAsync<Token[]>("Scope/claims");
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
     }
-
 }
