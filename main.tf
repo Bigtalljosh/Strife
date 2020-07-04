@@ -61,7 +61,7 @@ resource "azurerm_container_group" "tfcg_test" {
             protocol    = "TCP"
         }
 
-        environment_variables {
+        secure_environment_variables = {
             ASPNETCORE_Auth0__ClientId          = var.auth0clientid
             ASPNETCORE_Auth0__ClientSecret      = var.auth0clientsecret
             ASPNETCORE_Auth0__Domain            = var.auth0domain
