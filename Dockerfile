@@ -12,8 +12,9 @@ FROM build AS publish
 RUN dotnet publish "Strife.Blazor.Server.csproj" -c Release -o /app/publish
 
 FROM publish AS final
-ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_URLS=http://+:5000;https://+:5001
 EXPOSE 5000
+EXPOSE 5001
 WORKDIR /app
 COPY --from=publish /app/publish/ .
 ENTRYPOINT ["dotnet", "Strife.Blazor.Server.dll"]
@@ -21,4 +22,4 @@ ENTRYPOINT ["dotnet", "Strife.Blazor.Server.dll"]
 
 # For quick reference 
 # docker build -t strife .
-# docker run -p 8080:5000 strife
+# docker run -p 8080:5000 -p 8081:5001 strife
