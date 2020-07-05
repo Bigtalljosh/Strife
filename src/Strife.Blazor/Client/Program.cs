@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Toolbelt.Blazor.Extensions.DependencyInjection; 
 
 namespace Strife.Blazor.Client
 {
@@ -29,6 +30,7 @@ namespace Strife.Blazor.Client
             });
 
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddHeadElementHelper();
 
             await builder.Build().RunAsync();
         }
