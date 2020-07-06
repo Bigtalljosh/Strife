@@ -12,9 +12,8 @@ FROM build AS publish
 RUN dotnet publish "Strife.Blazor.Server.csproj" -c Release -o /app/publish
 
 FROM publish AS final
-ENV ASPNETCORE_URLS=http://+:5000;https://+:5001
+ENV ASPNETCORE_URLS=http://+:5000
 EXPOSE 5000
-EXPOSE 5001
 WORKDIR /app
 COPY --from=publish /app/publish/ .
 ENTRYPOINT ["dotnet", "Strife.Blazor.Server.dll"]
