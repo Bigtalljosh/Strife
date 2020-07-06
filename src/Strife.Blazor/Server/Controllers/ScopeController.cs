@@ -83,7 +83,7 @@ namespace Strife.Blazor.Server.Controllers
                 tokenInfo.Add(new Token { Type = scope.Type, Value = scope.Value });
             }
 
-            if(tokenInfo.Count == 0)
+            if (tokenInfo.Count == 0)
             {
                 tokenInfo.Add(new Token { Type = "test", Value = "This is a test response as you had no token on the request" });
             }

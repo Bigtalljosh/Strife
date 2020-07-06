@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Toolbelt.Blazor.Extensions.DependencyInjection; 
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace Strife.Blazor.Client
 {
