@@ -1,20 +1,12 @@
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Ardalis.ListStartupServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Newtonsoft.Json;
 using Strife.Blazor.Server.ServiceCollectionExtensions;
+using System.Collections.Generic;
 
 namespace Strife.Blazor.Server
 {
@@ -117,7 +109,7 @@ namespace Strife.Blazor.Server
 
             if (_environment.IsDevelopment())
             {
-                services.AddSwagger(_configuration);
+                AddDevelopServices(services);
             }
 
             AddProjectServices(services);
@@ -128,11 +120,25 @@ namespace Strife.Blazor.Server
             services.AddSingleton(new MarkdownService());
         }
 
+        private void AddDevelopServices(IServiceCollection services)
+        {
+            services.AddSwagger(_configuration);
+
+            services.Configure<ServiceConfig>(config =>
+            {
+                config.Services = new List<ServiceDescriptor>(services);
+
+                // optional - default path to view services is /listallservices - recommended to choose your own path
+                config.Path = "/diservices";
+            });
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
             if (_environment.IsDevelopment())
             {
+                app.UseShowAllServicesMiddleware();
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
             }
