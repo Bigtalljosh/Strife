@@ -117,6 +117,10 @@ app {
     color: red;
 }
 
+.profile .img-profile {
+    border-radius: 8px;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

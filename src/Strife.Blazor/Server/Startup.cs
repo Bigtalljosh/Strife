@@ -1,4 +1,5 @@
 using Ardalis.ListStartupServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,11 +24,17 @@ namespace Strife.Blazor.Server
             _enableSwagger = _configuration.GetValue<bool>("FeatureToggles:Swagger");
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddAuth0(_configuration);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = _configuration["Auth0:Domain"];
+                    options.Audience = _configuration["Auth0:ApiIdentifier"];
+                });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddHealthChecks();
@@ -43,6 +50,7 @@ namespace Strife.Blazor.Server
         private void AddProjectServices(IServiceCollection services)
         {
             services.AddSingleton(new MarkdownService());
+            services.AddTransient<IAzureFileProvider, AzureFileProvider>();
         }
 
         private void AddDevelopServices(IServiceCollection services)
