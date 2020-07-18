@@ -5,9 +5,6 @@
 @inject IHttpClientFactory ClientFactory
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
-@inject AuthenticationStateProvider AuthenticationStateProvider
-
-
 
 <h1>User Profile</h1>
 
@@ -54,14 +51,12 @@
 
 @code {
     private HttpClient client;
-    private AuthenticationState authState;
     string _uploadStatus = "";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         try
         {
-            authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             client = ClientFactory.CreateClient("ServerAPI");
 
         }
@@ -69,23 +64,16 @@
         {
             exception.Redirect();
         }
-        catch(Exception ex)
-        {
-            _uploadStatus = ex.Message;
-        }
     }
 
     async Task HandleSelection(IFileListEntry[] files)
     {
-        var x = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var file = files.FirstOrDefault();
         if (file != null)
         {
-            var userId = GetUserIdFromToken();
             using (var streamContent = new StreamContent(file.Data))
             {
-                // I want to just have the token on this request and then the api can get the id from the token, but I can't seem to get this working.
-                var response = await client.PostAsync($"api/ProfileActions/{userId}", streamContent);
+                var response = await client.PostAsync($"api/ProfileActions", streamContent);
                 if (response.IsSuccessStatusCode)
                 {
                     _uploadStatus = $"Success: {await response.Content.ReadAsStringAsync()}";
@@ -96,12 +84,6 @@
                 }
             }
         }
-    }
-
-    private string GetUserIdFromToken()
-    {
-        var sub = authState.User.Claims.First(i => i.Type == "sub").Value;
-        return sub.Replace("|", "-");
     }
 
     private async Task BeginSignOut(MouseEventArgs args)

@@ -7,7 +7,7 @@ namespace Strife.Blazor.Server.Controllers
     {
         protected string GetUserId()
         {
-            var sub = User.Claims.First(i => i.Type == "sub").Value;
+            var sub = User.Claims.First(i => i.Type.Contains("nameidentifier")).Value;
             return sub.Replace("|", "-");
         }
     }

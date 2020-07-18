@@ -17,15 +17,12 @@ namespace Strife.Blazor.Server.Controllers
             _azureFileProvider = azureFileProvider;
         }
 
-        [HttpPost("{userId}")]
-        public async Task<IActionResult> UpdatePicture(string userId)
+        [HttpPost]
+        public async Task<IActionResult> UpdatePicture()
         {
-
-            var x = User.Identity.IsAuthenticated;
-
             try
             {
-                var uri = await _azureFileProvider.UploadBlob("profiles", Request.Body, userId);// GetUserId());
+                var uri = await _azureFileProvider.UploadBlob("profiles", Request.Body, GetUserId());
                 return Created(uri, null);
             }
             catch (Exception)

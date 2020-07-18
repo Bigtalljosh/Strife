@@ -24,8 +24,6 @@ namespace Strife.Blazor.Server
             _enableSwagger = _configuration.GetValue<bool>("FeatureToggles:Swagger");
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddAuth0(_configuration);
@@ -33,7 +31,7 @@ namespace Strife.Blazor.Server
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = $"https://{_configuration["Auth0:Domain"]}";
+                    options.Authority = _configuration["Auth0:Domain"];
                     options.Audience = _configuration["Auth0:ApiIdentifier"];
                 });
 

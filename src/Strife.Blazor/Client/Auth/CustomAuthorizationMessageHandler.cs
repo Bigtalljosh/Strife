@@ -9,8 +9,7 @@ namespace Strife.Blazor.Client.Auth
             : base(provider, navigationManager)
         {
             ConfigureHandler(
-                authorizedUrls: new[] { "https://localhost" },
-                scopes: new[] { "" });
+                authorizedUrls: new[] { "https://localhost:5001/", "http://bigtalljosh.uksouth.azurecontainer.io:5000/" });
         }
     }
 }
