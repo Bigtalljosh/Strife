@@ -1,0 +1,100 @@
+@page "/profile"
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using BlazorInputFile;
+@inject IHttpClientFactory ClientFactory
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<h1>User Profile</h1>
+
+<AuthorizeView>
+    <Authorized>
+        <Title>Strife (@context.User.Identity.Name!)</Title>
+        <div>Hello, @context.User.Identity.Name!</div>
+        <div>
+            <img img-profile src="@context.User.Claims.ToList()[2].Value">
+        </div>
+        <div>
+            <InputFile OnChange="HandleSelection" />
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Claim
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var scope in @context.User.Claims)
+                {
+                    <tr>
+                        <td>@scope.Type</td>
+                        <td>@scope.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Authorized>
+
+    <NotAuthorized>
+        <Title>Strife - Profile</Title>
+        <h3>You need to log in to see this!</h3>
+        <a href="authentication/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private HttpClient client;
+    string _uploadStatus = "";
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            client = ClientFactory.CreateClient("ServerAPI");
+
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    async Task HandleSelection(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            using (var streamContent = new StreamContent(file.Data))
+            {
+                // I want to just have the token on this request and then the api can get the id from the token, but I can't seem to get this working.
+                var response = await client.PostAsync($"api/ProfileActions/5f00fc06b327b30013ebb34b", streamContent); // Hard coded my user id for now, I can't seem to access it.
+                if (response.IsSuccessStatusCode)
+                {
+                    _uploadStatus = $"Success: {await response.Content.ReadAsStringAsync()}";
+                }
+                else
+                {
+                    _uploadStatus = $"Error: {await response.Content.ReadAsStringAsync()}";
+                }
+            }
+        }
+    }
+
+    //private string GetUserIdFromToken()
+    //{
+    //    var sub = User.Claims.First(i => i.Type == "sub").Value;
+    //    return sub.Substring(sub.IndexOf("|" + 1));
+    //}
+
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}

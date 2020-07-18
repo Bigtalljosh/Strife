@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Strife.Blazor.Client.Auth;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,6 +20,11 @@ namespace Strife.Blazor.Client
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            // We use these to pass the token along with the request
+            builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
+            builder.Services.AddHttpClient("ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                                            .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+
             builder.Services.AddOidcAuthentication(options =>
             {
                 // Configure your authentication provider options here.
@@ -27,6 +33,7 @@ namespace Strife.Blazor.Client
 
                 options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
                 options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
+                options.ProviderOptions.DefaultScopes.Add("profile:write");
             });
 
             builder.Services.AddAuthorizationCore();

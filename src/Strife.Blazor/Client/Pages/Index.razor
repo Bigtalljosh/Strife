@@ -12,7 +12,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        markdown = await Http.GetStringAsync("/StrifeInfo");
+        markdown = await Http.GetStringAsync("/api/StrifeInfo");
     }
 
 }

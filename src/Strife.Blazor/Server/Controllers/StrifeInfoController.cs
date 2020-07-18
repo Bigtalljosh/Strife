@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Strife.Blazor.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class StrifeInfoController : ControllerBase
     {
         private readonly MarkdownService _markdownService;

@@ -28,6 +28,13 @@ namespace Strife.Blazor.Server
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddAuth0(_configuration);
+            //services.AddAuthentication()
+            //    .AddOpenIdConnect(options =>
+            //    {
+            //        options.ClientId = _configuration.GetValue<string>("Auth0:ClientId");
+            //        options.Authority = _configuration.GetValue<string>("Auth0:Domain");
+                    
+            //    });
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddHealthChecks();
@@ -43,6 +50,7 @@ namespace Strife.Blazor.Server
         private void AddProjectServices(IServiceCollection services)
         {
             services.AddSingleton(new MarkdownService());
+            services.AddTransient<IAzureFileProvider, AzureFileProvider>();
         }
 
         private void AddDevelopServices(IServiceCollection services)
