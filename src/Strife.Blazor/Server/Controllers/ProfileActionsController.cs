@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Strife.Blazor.Server.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProfileActionsController : BaseController
@@ -20,6 +20,9 @@ namespace Strife.Blazor.Server.Controllers
         [HttpPost("{userId}")]
         public async Task<IActionResult> UpdatePicture(string userId)
         {
+
+            var x = User.Identity.IsAuthenticated;
+
             try
             {
                 var uri = await _azureFileProvider.UploadBlob("profiles", Request.Body, userId);// GetUserId());

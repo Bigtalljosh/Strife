@@ -8,7 +8,7 @@ namespace Strife.Blazor.Server.Controllers
         protected string GetUserId()
         {
             var sub = User.Claims.First(i => i.Type == "sub").Value;
-            return sub.Substring(sub.IndexOf("|" + 1));
+            return sub.Replace("|", "-");
         }
     }
 }

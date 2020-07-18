@@ -10,7 +10,7 @@ namespace Strife.Blazor.Client.Auth
         {
             ConfigureHandler(
                 authorizedUrls: new[] { "https://localhost" },
-                scopes: new[] { "profile:write" });
+                scopes: new[] { "" });
         }
     }
 }

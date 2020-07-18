@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,20 @@ namespace Strife.Blazor.Client
             builder.Services.AddHttpClient("ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                                             .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
+            //builder.Services.AddHttpClient("ServerAPI", c => {
+            //    c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            //})
+            //.AddHttpMessageHandler(sp =>
+            //{
+            //    var handler = sp.GetService<AuthorizationMessageHandler>()
+            //        .ConfigureHandler(
+            //            authorizedUrls: new[] { "https://localhost:5001" },
+            //            scopes: new[] { "weatherapi" });
+
+            //    return handler;
+            //});
+
+
             builder.Services.AddOidcAuthentication(options =>
             {
                 // Configure your authentication provider options here.
@@ -33,7 +48,6 @@ namespace Strife.Blazor.Client
 
                 options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
                 options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
-                options.ProviderOptions.DefaultScopes.Add("profile:write");
             });
 
             builder.Services.AddAuthorizationCore();

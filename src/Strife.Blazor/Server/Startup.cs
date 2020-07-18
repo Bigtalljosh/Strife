@@ -1,4 +1,5 @@
 using Ardalis.ListStartupServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,13 +29,14 @@ namespace Strife.Blazor.Server
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddAuth0(_configuration);
-            //services.AddAuthentication()
-            //    .AddOpenIdConnect(options =>
-            //    {
-            //        options.ClientId = _configuration.GetValue<string>("Auth0:ClientId");
-            //        options.Authority = _configuration.GetValue<string>("Auth0:Domain");
-                    
-            //    });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = $"https://{_configuration["Auth0:Domain"]}";
+                    options.Audience = _configuration["Auth0:ApiIdentifier"];
+                });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddHealthChecks();
