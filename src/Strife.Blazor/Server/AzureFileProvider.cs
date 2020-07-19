@@ -2,8 +2,8 @@
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Strife.Blazor.Shared.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -36,25 +36,27 @@ namespace Strife.Blazor.Server
             return blockBlob.Uri.ToString();
         }
 
-        public async Task<List<IListBlobItem>> GetBlobs(string blobContainer)
+        public async Task<UserItemsViewModel> GetBlobs(string blobContainer, string directoryName)
         {
             CloudBlobContainer container = _blobClient.GetContainerReference(blobContainer);
-            await container.CreateIfNotExistsAsync();
+            
+            if (container is null)
+                return null;
 
             await container.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
 
             BlobContinuationToken continuationToken = null;
-            List<IListBlobItem> blobItems = new List<IListBlobItem>();
+            var userItemsViewModel = new UserItemsViewModel();
 
             do
             {
                 var response = await container.ListBlobsSegmentedAsync(continuationToken);
                 continuationToken = response.ContinuationToken;
-                blobItems.AddRange(response.Results);
+                userItemsViewModel.BlobItems.AddRange(response.Results);
             }
             while (continuationToken != null);
 
-            return blobItems;
+            return userItemsViewModel;
         }
     }
 }
