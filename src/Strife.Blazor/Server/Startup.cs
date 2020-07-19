@@ -31,8 +31,8 @@ namespace Strife.Blazor.Server
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = _configuration["Auth0:Domain"];
-                    options.Audience = _configuration["Auth0:ApiIdentifier"];
+                    options.Authority = "https://strife.eu.auth0.com/"; // _configuration["Auth0:Domain"];
+                    options.Audience = "https://strifeapi.com"; //_configuration["Auth0:ApiIdentifier"];
                 });
 
             services.AddControllersWithViews();
