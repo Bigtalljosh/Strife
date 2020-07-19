@@ -30,21 +30,5 @@ namespace Strife.Blazor.Server.Controllers
                 return new BadRequestObjectResult("Error saving file");
             }
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetItems()
-        {
-            var result = await _azureFileProvider.GetBlobs("profiles", GetUserId());
-
-            if (result is null)
-                return NotFound();
-
-            if(result.BlobItems.Count is 0 || result.BlobItems is null)
-            {
-                return NoContent();
-            }
-
-            return Ok(result);
-        }
     }
 }
