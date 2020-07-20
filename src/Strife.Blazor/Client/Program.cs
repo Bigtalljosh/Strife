@@ -32,8 +32,8 @@ namespace Strife.Blazor.Client
 
             builder.Services.AddOidcAuthentication(options =>
             {
-                options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
-                options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
+                options.ProviderOptions.Authority = auth0Config.Authority;
+                options.ProviderOptions.ClientId = auth0Config.ClientId;
                 options.ProviderOptions.ResponseType = "token id_token";
                 options.ProviderOptions.PostLogoutRedirectUri = "/index";
             });
