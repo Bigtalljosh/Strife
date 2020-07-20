@@ -16,5 +16,6 @@ namespace Strife.Blazor.Shared.ViewModels
     {
         public string Name { get; set; }
         public string Uri { get; set; }
+        public string FileExtension { get; set; }
     }
 }

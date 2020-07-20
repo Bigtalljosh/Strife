@@ -26,7 +26,9 @@ namespace Strife.Blazor.Server.Controllers
             try
             {
                 var filename = Guid.NewGuid().ToString();
-                var uri = await _azureBlobService.UploadPrivateAsync("profiles", GetUserId(), filename, Request.Body);
+                var contentType = Request.Headers["filecontenttype"];
+                var fileExtension = Request.Headers["fileextension"];
+                var uri = await _azureBlobService.UploadPrivateAsync("profiles", GetUserId(), filename, Request.Body, contentType, fileExtension);
                 return Created(uri, null);
             }
             catch (Exception ex)

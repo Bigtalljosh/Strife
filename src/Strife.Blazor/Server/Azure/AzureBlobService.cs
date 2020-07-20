@@ -32,15 +32,24 @@ namespace Strife.Blazor.Server.Azure
         /// <param name="blobName">Name of the file in Azure Blob storage</param>
         /// <param name="content">The file stream to upload</param>
         /// <returns>Uri of newly uploaded Blob</returns>
-        public async Task<Uri> UploadPublicAsync(string containerName, string blobName, Stream content)
+        public async Task<Uri> UploadPublicAsync(string containerName, string blobName, Stream content, string contentType, string fileExtension)
         {
             // Get a reference to a container 
             BlobContainerClient container = new BlobContainerClient(_connectionString, containerName);
             await container.CreateIfNotExistsAsync();
 
+            var blobHttpHeader = new BlobHttpHeaders
+            {
+                ContentType = contentType
+            };
+
             // Get a reference to a blob
             BlobClient blob = container.GetBlobClient(blobName);
-            await blob.UploadAsync(content);
+            await blob.UploadAsync(content, blobHttpHeader);
+            await blob.SetMetadataAsync(new Dictionary<string, string>()
+            {
+                { "extension", fileExtension }
+            });
 
             return blob.Uri;
         }
@@ -53,9 +62,9 @@ namespace Strife.Blazor.Server.Azure
         /// <param name="blobName">Name of the file in Azure Blob storage</param>
         /// <param name="content">The file stream to upload</param>
         /// <returns>Uri of newly uploaded Blob</returns>
-        public async Task<Uri> UploadPrivateAsync(string containerName, string userId, string blobName, Stream content)
+        public async Task<Uri> UploadPrivateAsync(string containerName, string userId, string blobName, Stream content, string contentType, string fileExtension)
         {
-            return await UploadPublicAsync(containerName, $"{userId}\\{blobName}", content);
+            return await UploadPublicAsync(containerName, $"{userId}\\{blobName}", content, contentType, fileExtension);
         }
 
         /// <summary>
@@ -74,10 +83,13 @@ namespace Strife.Blazor.Server.Azure
 
             await foreach (BlobItem blob in container.GetBlobsAsync())
             {
+                blob.Metadata.TryGetValue("extension", out string extension);
+
                 blobs.Items.Add(new UserItemViewModel
                 {
                     Name = blob.Name,
-                    Uri = container.Uri.ToString()
+                    Uri = container.Uri.ToString(),
+                    FileExtension = extension ?? "Unknown"
                 });
             }
 
@@ -101,10 +113,13 @@ namespace Strife.Blazor.Server.Azure
 
             await foreach (BlobItem blob in container.GetBlobsAsync(BlobTraits.All, BlobStates.All, userId))
             {
+                blob.Metadata.TryGetValue("extension", out string extension);
+
                 blobs.Items.Add(new UserItemViewModel
                 {
                     Name = blob.Name,
-                    Uri = $"{container.Uri}\\{blob.Name}"
+                    Uri = $"{container.Uri}\\{blob.Name}",
+                    FileExtension = extension ?? "Unknown"
                 });
             }
 

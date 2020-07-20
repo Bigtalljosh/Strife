@@ -9,7 +9,7 @@ namespace Strife.Blazor.Server.Azure
     {
         Task<UserItemsViewModel> ListPrivateAsync(string containerName, string userId);
         Task<UserItemsViewModel> ListPublicAsync(string containerName);
-        Task<Uri> UploadPrivateAsync(string containerName, string userId, string blobName, Stream content);
-        Task<Uri> UploadPublicAsync(string containerName, string blobName, Stream content);
+        Task<Uri> UploadPrivateAsync(string containerName, string userId, string blobName, Stream content, string contentType, string fileExtension);
+        Task<Uri> UploadPublicAsync(string containerName, string blobName, Stream content, string contentType, string fileExtension);
     }
 }
