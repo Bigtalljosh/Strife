@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Strife.Blazor.Server.ApplicationBuilderExtensions;
+using Strife.Blazor.Server.Azure;
 using Strife.Blazor.Server.ServiceCollectionExtensions;
 using System.Collections.Generic;
 
@@ -50,7 +51,7 @@ namespace Strife.Blazor.Server
         private void AddProjectServices(IServiceCollection services)
         {
             services.AddSingleton(new MarkdownService());
-            services.AddTransient<IAzureFileProvider, AzureFileProvider>();
+            services.AddTransient<IAzureBlobService, AzureBlobService>();
         }
 
         private void AddDevelopServices(IServiceCollection services)
