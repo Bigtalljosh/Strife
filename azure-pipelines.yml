@@ -71,5 +71,4 @@ steps:
       TF_VAR_auth0clientsecret: $(Auth0-ClientSecret)
       TF_VAR_auth0domain: $(Auth0-Domain)
       TF_VAR_auth0apiidentifier: $(Auth0-ApiIdentifier)
-      TF_VAR_azureblobaccountkey: $(AzureBlob-AccountKey)
-      TF_VAR_azureblobaccountname: $(AzureBlob-AccountName)
+      TF_VAR_azureblobconnectionstring: $(AzureBlob-ConnectionString)

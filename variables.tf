@@ -23,12 +23,7 @@ variable "auth0apiidentifier" {
   description = "Auth0 API Identifier"
 }
 
-variable "azureblobaccountkey" {
+variable "azureblobconnectionstring" {
   type        = string
-  description = "Azure Blob Storage Account Key" 
-}
-
-variable "azureblobaccountname" {
-  type        = string
-  description = "Azure Blob Storage Account Name" 
+  description = "Azure Blob Storage Connection String" 
 }
