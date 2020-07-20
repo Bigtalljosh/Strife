@@ -32,24 +32,16 @@ namespace Strife.Blazor.Client
             builder.Services.AddHttpClient("ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                                             .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
-            //builder.Services.AddOidcAuthentication(options =>
-            //{
-            //    // Configure your authentication provider options here.
-            //    // For more information, see https://aka.ms/blazor-standalone-auth
-            //    //builder.Configuration.Bind("Local", options.ProviderOptions);
-
-            //    options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
-            //    options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
-            //    options.ProviderOptions.ResponseType = "token id_token";
-            //    options.ProviderOptions.PostLogoutRedirectUri = "/index";
-            //});
-
-            builder.Services.AddAuth0Authentication(options =>
+            builder.Services.AddOidcAuthentication(options =>
             {
-                options.ProviderOptions.Authority = auth0Config.Authority;
-                options.ProviderOptions.ClientId = auth0Config.ClientId;
+                // Configure your authentication provider options here.
+                // For more information, see https://aka.ms/blazor-standalone-auth
+                //builder.Configuration.Bind("Local", options.ProviderOptions);
+
+                options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
+                options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
                 options.ProviderOptions.ResponseType = "token id_token";
-                //options.ProviderOptions.Prompt = "login";
+                options.ProviderOptions.PostLogoutRedirectUri = "/index";
             });
 
             builder.Services.AddAuthorizationCore();
