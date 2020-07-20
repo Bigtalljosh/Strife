@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Strife.Blazor.Client.Auth;
+using Strife.Blazor.Client.ServiceCollectionExtensions;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -35,6 +36,15 @@ namespace Strife.Blazor.Client
                 options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
                 options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
                 options.ProviderOptions.ResponseType = "token id_token";
+                options.ProviderOptions.PostLogoutRedirectUri = "/index";
+            });
+
+            builder.Services.AddAuth0Authentication(options =>
+            {
+                options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
+                options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
+                options.ProviderOptions.ResponseType = "token id_token";
+                options.ProviderOptions.Prompt = "login";
             });
 
             builder.Services.AddAuthorizationCore();
