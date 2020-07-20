@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Strife.Blazor.Client.Auth;
 using Strife.Blazor.Client.ServiceCollectionExtensions;
+using Strife.Blazor.Shared.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,6 +20,10 @@ namespace Strife.Blazor.Client
             await LoadAppSettingsAsync(builder);
 
             builder.RootComponents.Add<App>("app");
+            builder.Services.AddSingleton(new BaseAddress(builder.HostEnvironment.BaseAddress));
+
+            var auth0Config = builder.Configuration.GetSection("Auth0").Get<Auth0Config>();
+            builder.Services.AddSingleton(auth0Config);
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
@@ -27,24 +32,24 @@ namespace Strife.Blazor.Client
             builder.Services.AddHttpClient("ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                                             .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
-            builder.Services.AddOidcAuthentication(options =>
-            {
-                // Configure your authentication provider options here.
-                // For more information, see https://aka.ms/blazor-standalone-auth
-                //builder.Configuration.Bind("Local", options.ProviderOptions);
+            //builder.Services.AddOidcAuthentication(options =>
+            //{
+            //    // Configure your authentication provider options here.
+            //    // For more information, see https://aka.ms/blazor-standalone-auth
+            //    //builder.Configuration.Bind("Local", options.ProviderOptions);
 
-                options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
-                options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
-                options.ProviderOptions.ResponseType = "token id_token";
-                options.ProviderOptions.PostLogoutRedirectUri = "/index";
-            });
+            //    options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
+            //    options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
+            //    options.ProviderOptions.ResponseType = "token id_token";
+            //    options.ProviderOptions.PostLogoutRedirectUri = "/index";
+            //});
 
             builder.Services.AddAuth0Authentication(options =>
             {
-                options.ProviderOptions.Authority = builder.Configuration.GetValue<string>("Auth0:Domain");
-                options.ProviderOptions.ClientId = builder.Configuration.GetValue<string>("Auth0:ClientId");
+                options.ProviderOptions.Authority = auth0Config.Authority;
+                options.ProviderOptions.ClientId = auth0Config.ClientId;
                 options.ProviderOptions.ResponseType = "token id_token";
-                options.ProviderOptions.Prompt = "login";
+                //options.ProviderOptions.Prompt = "login";
             });
 
             builder.Services.AddAuthorizationCore();
@@ -60,7 +65,6 @@ namespace Strife.Blazor.Client
         /// <returns></returns>
         private static async Task LoadAppSettingsAsync(WebAssemblyHostBuilder builder)
         {
-            // read JSON file as a stream for configuration
             var client = new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
             // the appsettings file must be in 'wwwroot'
             using var response = await client.GetAsync("appsettings.json");

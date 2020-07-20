@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@inject BaseAddress BaseAddress
+@inject Auth0Config Auth0Config
+
+<AuthorizeView>
+    <Authorized>
+        <button class=@($"{CssClass} btn btn-link") @onclick=BeginSignOut>Log out</button>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    [Parameter]
+    public string CssClass { get; set; }
+
+    private async Task BeginSignOut()
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo($"{Auth0Config.Authority}v2/logout?client_id={Auth0Config.ClientId}&returnTo={BaseAddress.Url}authentication/logout");
+    }
+}
