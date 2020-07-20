@@ -42,8 +42,7 @@ resource "azurerm_container_group" "strife-acg" {
             ASPNETCORE_Auth0__ClientSecret      = var.auth0clientsecret
             ASPNETCORE_Auth0__Domain            = var.auth0domain
             ASPNETCORE_Auth0__ApiIdentifier     = var.auth0apiidentifier
-            ASPNETCORE_Azure__StorageCredentials__AccountName     = var.azureblobaccountname
-            ASPNETCORE_Azure__StorageCredentials__AccountKey      = var.azureblobaccountkey
+            ASPNETCORE_Azure__Blob__ConnectionString     = var.azureblobconnectionstring
         }
   }
 }
