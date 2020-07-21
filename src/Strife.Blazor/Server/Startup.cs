@@ -2,6 +2,7 @@ using Ardalis.ListStartupServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -52,6 +53,7 @@ namespace Strife.Blazor.Server
         {
             services.AddSingleton(new MarkdownService());
             services.AddTransient<IAzureBlobService, AzureBlobService>();
+            services.AddSingleton(InitializeCosmosClientInstanceAsync(_configuration));
         }
 
         private void AddDevelopServices(IServiceCollection services)
@@ -107,6 +109,15 @@ namespace Strife.Blazor.Server
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Strife API V1");
                 });
             }
+        }
+
+        private static CosmosClient InitializeCosmosClientInstanceAsync(IConfiguration config)
+        {
+            var account = config.GetValue<string>("Azure:Cosmos:Uri");
+            var key = config.GetValue<string>("Azure:Cosmos:PrimaryKey");
+            CosmosClient client = new CosmosClient(account, key);
+
+            return client;
         }
     }
 }

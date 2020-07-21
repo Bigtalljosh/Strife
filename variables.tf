@@ -27,3 +27,18 @@ variable "azureblobconnectionstring" {
   type        = string
   description = "Azure Blob Storage Connection String" 
 }
+
+variable "azurecosmosdatabasename" {
+  type        = string
+  description = "Azure CosmosDb Database Name" 
+}
+
+variable "azurecosmosprimarykey" {
+  type        = string
+  description = "Azure CosmosDb Primary key" 
+}
+
+variable "azurecosmosUri" {
+  type        = string
+  description = "Azure CosmosDb Uri" 
+}
