@@ -29,6 +29,7 @@ namespace Strife.Blazor.Server
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddAuth0(_configuration);
+            services.AddResponseCompression();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -85,6 +86,7 @@ namespace Strife.Blazor.Server
                 app.UseHsts();
             }
 
+            app.UseResponseCompression();
             app.AddRobots();
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
