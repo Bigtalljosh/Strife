@@ -38,7 +38,7 @@ variable "azurecosmosprimarykey" {
   description = "Azure CosmosDb Primary key" 
 }
 
-variable "azurecosmosUri" {
+variable "azurecosmosuri" {
   type        = string
   description = "Azure CosmosDb Uri" 
 }
