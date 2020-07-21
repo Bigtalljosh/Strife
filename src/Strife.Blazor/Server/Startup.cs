@@ -2,6 +2,7 @@ using Ardalis.ListStartupServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using Strife.Blazor.Server.ApplicationBuilderExtensions;
 using Strife.Blazor.Server.Azure;
 using Strife.Blazor.Server.ServiceCollectionExtensions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Strife.Blazor.Server
 {
@@ -28,8 +30,14 @@ namespace Strife.Blazor.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAuth0(_configuration);
-            services.AddResponseCompression();
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+                options.MimeTypes =
+                    ResponseCompressionDefaults.MimeTypes.Concat(
+                        new[] { "image/svg+xml" });
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
