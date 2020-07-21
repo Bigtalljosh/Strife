@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Strife.Blazor.Server.Azure;
-using Strife.Blazor.Shared.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Strife.Blazor.Server.Controllers
@@ -38,21 +36,17 @@ namespace Strife.Blazor.Server.Controllers
         }
 
         [HttpGet]
-        // Returning IActionResult and response codes here actually threw an issue about Blazor only supporting application/json. 
-        //Not sure why yet but this is a workaround
-        public async Task<ActionResult<UserItemsViewModel>> ListBlobs()
+        public async Task<IActionResult> ListBlobs()
         {
-
             var results = await _azureBlobService.ListPrivateAsync("profiles", GetUserId());
 
-            //if (results is null)
-            //    return NotFound();
+            if (results is null)
+                return NotFound();
 
-            //if (results.Count is 0)
-            //    return NoContent();
+            if (results.Items.Count is 0)
+                return NoContent();
 
-            //return Ok(response);
-            return results;
+            return Ok(results);
         }
     }
 }

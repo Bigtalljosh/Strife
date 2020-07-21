@@ -72,3 +72,6 @@ steps:
       TF_VAR_auth0domain: $(Auth0-Domain)
       TF_VAR_auth0apiidentifier: $(Auth0-ApiIdentifier)
       TF_VAR_azureblobconnectionstring: $(AzureBlob-ConnectionString)
+      TF_VAR_azurecosmosuri: $(AzureCosmos-Uri)
+      TF_VAR_azurecosmosprimarykey: $(AzureCosmos-PrimaryKey)
+      TF_VAR_azurecosmosdatabasename: $(AzureCosmos-DatabaseName)

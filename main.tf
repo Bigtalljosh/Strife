@@ -43,6 +43,9 @@ resource "azurerm_container_group" "strife-acg" {
             ASPNETCORE_Auth0__Domain            = var.auth0domain
             ASPNETCORE_Auth0__ApiIdentifier     = var.auth0apiidentifier
             ASPNETCORE_Azure__Blob__ConnectionString     = var.azureblobconnectionstring
+            ASPNETCORE_Azure__Cosmos__Uri                = var.azurecosmosuri
+            ASPNETCORE_Azure__Cosmos__DatabaseName       = var.azurecosmosdatabasename
+            ASPNETCORE_Azure__Cosmos__PrimaryKey         = var.azurecosmosprimarykey
         }
   }
 }
