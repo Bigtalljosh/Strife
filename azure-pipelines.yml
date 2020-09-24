@@ -55,23 +55,23 @@ steps:
       tags: |
         $(tag)
 
-  - script: |
-      set -e
-      terraform init -input=false
-      terraform apply -input=false -auto-approve
-    name: RunTerraform
-    displayName: Run Terraform
-    env:
-      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-      ARM_TENANT_ID: $(ARM_TENANT_ID)
-      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-      TF_VAR_imagebuild: $(tag)
-      TF_VAR_auth0clientid: $(Auth0-ClientId)
-      TF_VAR_auth0clientsecret: $(Auth0-ClientSecret)
-      TF_VAR_auth0domain: $(Auth0-Domain)
-      TF_VAR_auth0apiidentifier: $(Auth0-ApiIdentifier)
-      TF_VAR_azureblobconnectionstring: $(AzureBlob-ConnectionString)
-      TF_VAR_azurecosmosuri: $(AzureCosmos-Uri)
-      TF_VAR_azurecosmosprimarykey: $(AzureCosmos-PrimaryKey)
-      TF_VAR_azurecosmosdatabasename: $(AzureCosmos-DatabaseName)
+#  - script: |
+#      set -e
+#      terraform init -input=false
+#      terraform apply -input=false -auto-approve
+#    name: RunTerraform
+#    displayName: Run Terraform
+#    env:
+#      ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+#      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+#      ARM_TENANT_ID: $(ARM_TENANT_ID)
+#      ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+#      TF_VAR_imagebuild: $(tag)
+#      TF_VAR_auth0clientid: $(Auth0-ClientId)
+#      TF_VAR_auth0clientsecret: $(Auth0-ClientSecret)
+#      TF_VAR_auth0domain: $(Auth0-Domain)
+#      TF_VAR_auth0apiidentifier: $(Auth0-ApiIdentifier)
+#      TF_VAR_azureblobconnectionstring: $(AzureBlob-ConnectionString)
+#      TF_VAR_azurecosmosuri: $(AzureCosmos-Uri)
+#      TF_VAR_azurecosmosprimarykey: $(AzureCosmos-PrimaryKey)
+#      TF_VAR_azurecosmosdatabasename: $(AzureCosmos-DatabaseName)
